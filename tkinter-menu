@@ -1,0 +1,115 @@
+import tkinter as tk                #導入tkinter 用tk表示
+from datetime import datetime       #通過 datetime 模組來得到當前時間
+from tkinter import ttk
+
+
+def product_allColumns():
+    list1 = ["日期","品項", "免費加飯","數量","總價","備註"]
+    return list1
+def event1():
+    global dateStr5
+    global dateStr4
+    strlll=dateStr4.get()
+    total = int(strlll) * 80
+    totalTWD = str(total)
+    dateStr5.set(totalTWD)
+
+win = tk.Tk()                       #創建一個視窗
+mainmenu = tk.Menu()        # 創造主選單
+win.minsize(width=600,height=400)   #視窗最小尺寸
+win.maxsize(width=600,height=400)   #視窗最大尺寸
+win.title("庫存管理系統")             #庫存管理系統
+#下拉式選單
+menu1=tk.Menu(tearoff=0)    # 創造子選單 1
+menu2=tk.Menu(tearoff=0)    # 創造子選單 2
+win.config(menu=mainmenu)
+mainmenu.add_cascade(label="設定",menu=menu1)
+mainmenu.add_cascade(label="幫助",menu=menu2)
+menu1.add_command(label="離開",command=win.destroy)
+
+#日期 lablel 標籤
+lablel_date = tk.Label(win,text="日期",fg="#0000E3") # 標籤:製造日期 顏色為藍色
+lablel_date.place(x=0,y=0)  # 製造日期 指定位置
+dateStr = tk.StringVar()  #創建一個 dateStr 字串變數
+dateStr.set(datetime.now().strftime('%m-%d-%H:%M')) #將dateStr字串變數設定 獲取當前時間
+lablel_date_detailed = tk.Label(win,textvariable=dateStr)  #標籤:詳細時間
+lablel_date_detailed.place(x=60,y=0)  #詳細時間 指定位置
+
+#品項 Radiobutton 多選一
+lablel_2 = tk.Label(win,text="均一價80元",fg="#0000E3") # 標籤:母件編號 顏色為藍色
+lablel_2.place(x=0,y=30)  # 母件編號 指定位置
+dateStr2 = tk.StringVar() #variable必須是tk.StringVar() 同一個
+r1 = ttk.Radiobutton(win, text='排骨便當', value='排骨便當', variable=dateStr2,command=event1) #創建多選一按鈕 人員1
+r2 = ttk.Radiobutton(win, text='雞腿便當', value='雞腿便當', variable=dateStr2,command=event1) #創建多選一按鈕 人員2
+r3 = ttk.Radiobutton(win, text='控肉便當', value='控肉便當', variable=dateStr2,command=event1) #創建多選一按鈕 人員3
+r1.place(x=70,y=30)                #指定位置
+r2.place(x=140,y=30)               #指定位置
+r3.place(x=210,y=30)               #指定位置
+
+#免費加飯 Combobox下拉式選單
+lablel_3 = tk.Label(win,text="免費加飯",fg="#0000E3") # 標籤:品名規格 顏色為藍色
+lablel_3.place(x=0,y=60)  # 品名規格 指定位置
+dateStr3=tk.StringVar()#創建一個 dateStr3 字串變數
+dateStr3.set("不是")#預設不是
+Combobox_3 =ttk.Combobox(win,width=5,textvariable=dateStr3)
+Combobox_3["values"]=("是","不是") # 選擇加不加飯
+Combobox_3.place(x=60,y=60)#Combobox位置
+
+#數量 entry 輸入
+lablel_4 = tk.Label(win,text="數量",fg="#0000E3") # 標籤:單價 顏色為藍色
+lablel_4.place(x=0,y=90)  # 單價 指定位置
+dateStr4 = tk.IntVar()  #創建一個 dateStr4 字串變數
+dateStr4.set("1") #將dateStr4 字串變數設定
+entry_4 = ttk.Combobox(win,width=5,textvariable=dateStr4)  # 輸入框:數量
+entry_4["values"]=(1,2,3,4,5,6,7,8,9) # 選擇幾個便當
+entry_4.place(x=60,y=90)  #輸入框 單價位置
+
+#總價 lablel
+lablel_5 = tk.Label(win,text="總價",fg="#0000E3") # 標籤:生產數量 顏色為藍色
+lablel_5.place(x=0,y=120)  # 生產數量 指定位置
+
+dateStr5 = tk.StringVar()  #創建一個 dateStr5 字串變數
+dateStr5.set("80")           #將dateStr5 預設為一個便當的價錢
+entry_5 = tk.Label(win,textvariable=dateStr5)  # 標籤:總價計算
+entry_5.place(x=60,y=120)  #lablel 生產數量
+
+lablel_6 = tk.Label(win,text="備註",fg="#0000E3") # 標籤:負責人員 顏色為藍色
+lablel_6.place(x=0,y=150)  # 負責人員 指定位置
+
+Radiobutton_6 = tk.StringVar() #variable必須是tk.StringVar() 同一個
+Radiobutton_6.set(" ")           #將dateStr5 字串變數設定 獲取當前時間
+entry_6 = tk.Entry(win,textvariable=Radiobutton_6)  # 輸入框:生產數量
+entry_6.place(x=60,y=150)  #輸入框 生產數量
+
+
+def product_info():
+
+    list1 = ["dateStr", "dateStr2", "dateStr3","Combobox_3","dateStr5",
+             "dateStr6"]
+    return list1
+
+
+# 下半段
+
+
+columns = product_allColumns()
+tree = ttk.Treeview(win,columns=columns, show='headings')
+
+tree.place(x=0,y=200)
+
+for i in columns:
+    tree.heading(i, text=i) # 欄位文字設定
+    tree.column(i, minwidth=0, width=100)
+
+
+tree.insert('', tk.END, values=(dateStr.get(), dateStr2.get(), dateStr3.get(), dateStr4.get(),dateStr5.get(),Radiobutton_6.get()))
+
+
+def event1():
+    tree.insert('', tk.END,values=(dateStr.get(), dateStr2.get(), dateStr3.get(), dateStr4.get(), dateStr5.get(),Radiobutton_6.get()))
+
+btn1 = tk.Button(win,text="購物車",font=20,command=event1) #創建按鈕
+btn1.place(x=350,y=150)                  #指定位置
+
+
+win.mainloop()
